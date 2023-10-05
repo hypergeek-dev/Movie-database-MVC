@@ -4,12 +4,27 @@
 
 <div class="text-center">
     <h1 class="display-4">SearchIndex</h1>
-    <p>
+    <button id="createNewButton">Create New</button>
+    <div id="movieCreateContainer"></div>
 
-        <a href="@Url.Action("Create", "Movie")">Create New</a>"
+    <script>
+        $(document).ready(function () {
+            $("#createNewButton").click(function () {
+                $.ajax({
+                    url: '@Url.Action("MovieCreatePartial", "PartialView")',
+                    type: 'GET',
+                    success: function (data) {
+                        $("#movieCreateContainer").html(data);
+                    }
+                });
+            });
 
-   </p>
-</div>
+            $(document).on('click', '#submitButton', function () {
+
+                $("#movieCreateContainer").html('');
+            });
+        });
+    </script>
 
 @{
     Html.RenderPartial("_MovieIndexPartial");
