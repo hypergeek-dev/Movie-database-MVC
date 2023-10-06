@@ -1,31 +1,32 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿    @{
+        ViewData["Title"] = "Home Page";
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<div class="text-center">
-    <h1 class="display-4">SearchIndex</h1>
     <button id="createNewButton">Create New</button>
     <div id="movieCreateContainer"></div>
 
     <script>
         $(document).ready(function () {
             $("#createNewButton").click(function () {
+                console.log("Button clicked");  
                 $.ajax({
                     url: '@Url.Action("MovieCreatePartial", "PartialView")',
                     type: 'GET',
                     success: function (data) {
                         $("#movieCreateContainer").html(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error: " + status + "; " + error);
                     }
                 });
             });
+        $(document).on('click', '#submitButton', function () {
 
-            $(document).on('click', '#submitButton', function () {
-
-                $("#movieCreateContainer").html('');
-            });
+            $("#movieCreateContainer").html('');
+        });
         });
     </script>
 
-@{
-    Html.RenderPartial("_MovieIndexPartial");
-}
+    <partial name="_MovieIndexPartial" />

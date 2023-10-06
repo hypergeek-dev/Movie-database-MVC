@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Movie_database_MVC.Data;
 using Movie_database_MVC.Models;
-
+using System.Threading.Tasks;
 
 namespace Movie_database_MVC.Controllers
 {
@@ -15,46 +15,67 @@ namespace Movie_database_MVC.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var movies = await _context.Movies.ToListAsync();
+            return View(movies);
         }
 
         [HttpPost]
-        public ActionResult Create(Movie movie)
+        public async Task<IActionResult> Create(Movie movie)
         {
-            _context.Movies.Add(movie);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _context.Movies.Add(movie);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(movie);
         }
 
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var movie = _context.Movies.Find(id);
+            var movie = await _context.Movies.FindAsync(id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
             return View(movie);
         }
 
         [HttpPost]
-        public ActionResult Edit(Movie movie)
+        public async Task<IActionResult> Edit(Movie movie)
         {
-            _context.Entry(movie).State = EntityState.Modified;
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _context.Entry(movie).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(movie);
         }
 
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var movie = _context.Movies.Find(id);
+            var movie = await _context.Movies.FindAsync(id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
             return View(movie);
         }
 
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = _context.Movies.Find(id);
+            var movie = await _context.Movies.FindAsync(id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
             _context.Movies.Remove(movie);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
