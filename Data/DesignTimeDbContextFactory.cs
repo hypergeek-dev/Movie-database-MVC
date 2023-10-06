@@ -10,7 +10,7 @@ namespace Movie_database_MVC.Data
         public MovieDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<MovieDbContext>();
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=MovieDatabase;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server = localhost; Database = MovieDB; Trusted_Connection = True; MultipleActiveResultSets = true");
 
             return new MovieDbContext(optionsBuilder.Options);
         }

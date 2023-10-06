@@ -12,8 +12,8 @@ using Movie_database_MVC.Data;
 namespace Movie_database_MVC.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20231005110411_initial")]
-    partial class initial
+    [Migration("20231006085612_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
